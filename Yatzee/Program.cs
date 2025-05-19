@@ -12,17 +12,17 @@ class Yatzy
                                                             // skapar variabler för varje komponent av yatzy spelet. 
     static void Main()
     {
-        Console.WriteLine("Välkommen till Yatzy!"); 
-        bool playAgain = true;
+        Console.WriteLine("Välkommen till Yatzy!");         
+        bool playAgain = true;                                    // Welcome message
 
-        while (playAgain)
+        while (playAgain)                                         // Loop to allow replaying the game
         {
-            ResetGame();
-            for (int round = 0; round < 13; round++)
-            {
+            ResetGame();                                          // Reset scores and used categories
+            for (int round = 0; round < 13; round++)              // 13 rounds in a Yatzy game
+            {   
                 PlayRound();
             }
-            ShowFinalScore();
+            ShowFinalScore();                                    // Show total score after 13 rounds
             Console.Write("Vill du spela igen? (ja/nej): ");
             playAgain = Console.ReadLine().ToLower() == "ja";
         }
@@ -30,20 +30,20 @@ class Yatzy
 
     static void ResetGame()
     {
-        Array.Clear(scores, 0, scores.Length);
-        Array.Clear(categoriesUsed, 0, categoriesUsed.Length);
+        Array.Clear(scores, 0, scores.Length);                          // Reset scores array to 0
+        Array.Clear(categoriesUsed, 0, categoriesUsed.Length);          // Reset used categories
     }
 
     static void PlayRound()
     {
-        Array.Clear(keep, 0, keep.Length);
+        Array.Clear(keep, 0, keep.Length);                              // Clear saved dice
         int rolls = 0;
 
-        while (rolls < 3)
+        while (rolls < 3)                           // Player can roll up to 3 times
         {
             RollDice();
             DisplayDice();
-            if (rolls < 2) ChooseKeep();
+            if (rolls < 2) ChooseKeep();                        // Let player choose dice to keep (not after last roll)
             rolls++;
         }
 
@@ -60,23 +60,26 @@ class Yatzy
 
     static void RollDice()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)                     // Loop through all 5 dice
         {
-            if (!keep[i]) dice[i] = random.Next(1, 7);
+            if (!keep[i]) dice[i] = random.Next(1, 7);          // Roll dicee if not marked as "keep"
         }
     }
 
     static void DisplayDice()
     {
-        Console.WriteLine("Tärningar: " + string.Join(", ", dice));
+        Console.WriteLine("Tärningar: " + string.Join(", ", dice));             // Print all dice values
     }
 
     static void ChooseKeep()
     {
         Console.Write("Vilka tärningar vill du spara? (ex: 1 3 5 för att spara första, tredje och femte tärningen): ");
-        string[] input = Console.ReadLine().Split();
-        Array.Clear(keep, 0, keep.Length);
-        foreach (var num in input)
+        string[] input = Console.ReadLine().Split();                // Read and split user input by spaces
+        Array.Clear(keep, 0, keep.Length);                            // Clear previous keep values
+
+
+
+        foreach (var num in input)          // Loop through entered numbers
         {
             if (int.TryParse(num, out int index) && index >= 1 && index <= 5)
                 keep[index - 1] = true;
@@ -109,7 +112,8 @@ class Yatzy
             Console.Write("Ogiltigt val. Välj igen: ");
         }
         return choice - 1;
-    }
+    }                                                               // Visar tillgängliga kategorier och låter spelaren välja en som inte redan har använts.
+
 
     static void ScoreCategory(int category)
     {
